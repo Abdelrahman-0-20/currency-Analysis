@@ -12,14 +12,14 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from io import BytesIO
 
-# -----------------------------------------------------------------------------
+ 
 # Page configuration
-# -----------------------------------------------------------------------------
+ 
 st.set_page_config(page_title="Crypto Analysis Suite", layout="wide")
 
-# -----------------------------------------------------------------------------
+# 
 # Helper functions
-# -----------------------------------------------------------------------------
+# 
 @st.cache_data(show_spinner=False)
 def load_data(file_bytes, file_name):
     """Load and preprocess the uploaded CSV file."""
@@ -130,9 +130,9 @@ def calculate_drawdown(df):
     return df
 
 
-# -----------------------------------------------------------------------------
+# 
 # Sidebar Navigation
-# -----------------------------------------------------------------------------
+# 
 st.sidebar.title("Navigation")
 app_mode = st.sidebar.radio(
     "Select Section",
@@ -147,9 +147,9 @@ app_mode = st.sidebar.radio(
     ],
 )
 
-# -----------------------------------------------------------------------------
+# 
 # Data loading (common to all sections)
-# -----------------------------------------------------------------------------
+# 
 st.sidebar.header("Data Source")
 uploaded_file = st.sidebar.file_uploader("Upload your crypto CSV", type=["csv"])
 
@@ -203,9 +203,9 @@ def load_data(file_bytes, file_name):
 
 
 
-# -----------------------------------------------------------------------------
+# 
 # 1. Case Study
-# -----------------------------------------------------------------------------
+# 
 if app_mode == "Case Study":
     st.title("Cryptocurrency Price Analysis - Case Study")
     st.markdown(
@@ -224,9 +224,9 @@ if app_mode == "Case Study":
     """
     )
 
-# -----------------------------------------------------------------------------
+# 
 # 2. EDA & Visualization
-# -----------------------------------------------------------------------------
+# 
 elif app_mode == "EDA & Visualization":
     st.title("Exploratory Data Analysis & Visualization")
     crypto_list = sorted(df["crypto_name"].unique())
@@ -268,9 +268,9 @@ elif app_mode == "EDA & Visualization":
         fig = px.histogram(returns_df, x="daily_return", color="crypto_name", nbins=50, marginal="box", opacity=0.6, title="Daily Returns (%) Distribution")
         st.plotly_chart(fig, use_container_width=True)
 
-# -----------------------------------------------------------------------------
+# 
 # 3. Technical Indicators
-# -----------------------------------------------------------------------------
+# 
 elif app_mode == "Technical Indicators":
     st.title("Technical Indicators Analysis")
     crypto_list = sorted(df["crypto_name"].unique())
@@ -324,9 +324,9 @@ elif app_mode == "Technical Indicators":
         fig.update_layout(title="RSI Indicator (14-period)", yaxis_range=[0, 100], height=300)
         st.plotly_chart(fig, use_container_width=True)
 
-# -----------------------------------------------------------------------------
+# 
 # 4. Comparison Dashboard
-# -----------------------------------------------------------------------------
+# 
 elif app_mode == "Comparison Dashboard":
     st.title("Cryptocurrency Comparison Dashboard")
     crypto_list = sorted(df["crypto_name"].unique())
@@ -348,9 +348,9 @@ elif app_mode == "Comparison Dashboard":
     fig = px.imshow(corr_matrix, text_auto=".2f", aspect="auto", title="Price Correlation Matrix", color_continuous_scale="RdBu_r")
     st.plotly_chart(fig, use_container_width=True)
 
-# -----------------------------------------------------------------------------
+# 
 # 5. 3D Explorer
-# -----------------------------------------------------------------------------
+# 
 elif app_mode == "3D Explorer":
     st.title("3D Data Explorer")
     numeric_cols = ["open", "high", "low", "close", "volume", "marketCap"]
@@ -364,9 +364,9 @@ elif app_mode == "3D Explorer":
     fig = px.scatter_3d(df, x=x_axis, y=y_axis, z=z_axis, color=color_by, hover_data=["timestamp", "crypto_name"], title=f"3D Scatter: {x_axis} vs {y_axis} vs {z_axis}", opacity=0.7)
     st.plotly_chart(fig, use_container_width=True)
 
-# -----------------------------------------------------------------------------
+# 
 # 6. Data Download
-# -----------------------------------------------------------------------------
+# 
 elif app_mode == "Data Download":
     st.title("Download Filtered Data")
     crypto_choice = st.multiselect("Select cryptocurrencies", df["crypto_name"].unique(), default=df["crypto_name"].unique())
@@ -380,9 +380,9 @@ elif app_mode == "Data Download":
     if not filtered.empty:
         st.download_button(label="Download filtered data as CSV", data=filtered.to_csv(index=False), file_name="filtered_crypto_data.csv", mime="text/csv")
 
-# -----------------------------------------------------------------------------
+# 
 # 7. Machine Learning
-# -----------------------------------------------------------------------------
+# 
 elif app_mode == "Machine Learning":
     st.title("Machine Learning - Price Prediction")
     crypto_choice = st.selectbox("Select cryptocurrency", sorted(df["crypto_name"].unique()))
